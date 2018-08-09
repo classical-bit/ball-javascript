@@ -24,8 +24,14 @@ var ball = {
 }
 
 var update = function(){
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    // context.clearRect(0, 0, canvas.width, canvas.height);
     
+    //Trailing Effect
+    context.fillStyle = 'rgba( 0, 0, 0, 0.3)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ball.draw()
+
     // PUTS BALL IN LINEAR MOTION
     ball.x += ball.vx;
     ball.y += ball.vy;
@@ -40,7 +46,7 @@ var update = function(){
     if(ball.y + ball.vy + ball.radius > canvas.height || ball.y + ball.vy - ball.radius < 0)
         ball.vy = -ball.vy;
 
-    ball.draw()
+    
     raf = window.requestAnimationFrame(update);
 }
 
