@@ -3,7 +3,7 @@ var context = canvas.getContext('2d');
 var raf;
 
 canvas.width = window.innerWidth;
-canvas.height = (window.innerHeight/4)*3;
+// canvas.height = (window.innerHeight/4)*3;
 
 var ball = {
     x: 50,
@@ -13,6 +13,7 @@ var ball = {
     radius: 30,
     color: '#E91E63',
     draw: function(){
+        
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         context.closePath();
@@ -25,12 +26,20 @@ var ball = {
 var update = function(){
     context.clearRect(0, 0, canvas.width, canvas.height);
     
+    // PUTS BALL IN LINEAR MOTION
     ball.x += ball.vx;
     ball.y += ball.vy;
+
+    // SIMULATE ACCELARATION
+    ball.vy *= 0.99;
+    ball.vy += 0.30;
+    
+    // KEEPS THE BALL IN BOUNDARY
     if(ball.x + ball.vx + ball.radius > canvas.width || ball.x + ball.vx - ball.radius < 0)
         ball.vx = -ball.vx;
     if(ball.y + ball.vy + ball.radius > canvas.height || ball.y + ball.vy - ball.radius < 0)
         ball.vy = -ball.vy;
+
     ball.draw()
     raf = window.requestAnimationFrame(update);
 }
