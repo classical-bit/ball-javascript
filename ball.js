@@ -1,6 +1,7 @@
 var canvas = document.getElementById('can');
 var context = canvas.getContext('2d');
 var raf;
+var isBallMoving = false;
 
 canvas.width = window.innerWidth;
 // canvas.height = (window.innerHeight/4)*3;
@@ -23,12 +24,15 @@ var ball = {
     }
 }
 
-var update = function(){
-    // context.clearRect(0, 0, canvas.width, canvas.height);
-    
-    //Trailing Effect
+function clear(){
     context.fillStyle = 'rgba( 0, 0, 0, 0.3)';
     context.fillRect(0, 0, canvas.width, canvas.height);
+}
+var update = function(){
+    // context.clearRect(0, 0, canvas.width, canvas.height);
+
+    //Trailing Effect
+    clear();
     
     ball.draw()
 
@@ -50,10 +54,31 @@ var update = function(){
     raf = window.requestAnimationFrame(update);
 }
 
-canvas.addEventListener('mouseover', function(e){
-    raf = window.requestAnimationFrame(update);
+canvas.addEventListener('mousemove', function(e){
+    if(!isBallMoving){
+        // if(ball.x > e.clientX){
+        //     if(ball.vx > 0)
+        //         ball.vx = -ball.vx;
+        // }else{
+        //     if(ball.vx < 0)
+        //         ball.vx = -ball.vx;
+        // }
+        ball.x = e.clientX;
+        ball.y = e.clientY;
+        
+        clear();
+        ball.draw();
+    }
+});
+
+canvas.addEventListener('click', function(e){
+    if(!isBallMoving){
+        raf = window.requestAnimationFrame(update);
+        isBallMoving = true;
+    }
 });
 
 canvas.addEventListener('mouseout', function(e){
     window.cancelAnimationFrame(raf);
+    isBallMoving = false;
 });
